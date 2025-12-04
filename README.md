@@ -4,12 +4,12 @@
 Это backend django-приложение, которое осуществляет взаимодействие с frontend.
 Берет на себя все, что связано с получением данных от frontend, реализацией бизнес логики и возвращением данных по API.
 
-<img src="README/main_screen.png" alt="main_screen" style="display: block; margin: 0 auto;" width="600">
+<img src="README/main_screen.png" alt="main_screen" style="display: block; margin: 0 auto;" width="500">
 
 ## Контракт для API
 Названия эндпоинтов и ожидаемую структуру ответа от API можно найти в [README/Marketplace API.yaml](./README/Marketplace API.yaml).
 
-<img src="README/api_contract.png" alt="api_contract" style="display: block; margin: 0 auto;" width="600">
+<img src="README/api_contract.png" alt="api_contract" style="display: block; margin: 0 auto;" width="500">
 
 
 ## Обязательная конфигурация для развертывания и запуска приложения
