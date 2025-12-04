@@ -1,0 +1,1306 @@
+openapi: 3.0.3
+info:
+  title: Marketplace API
+  version: 1.0.0
+  description: Marketplace
+paths:
+  /api/banners:
+    get:
+      operationId: banners_list
+      description: get banner items
+      summary: Get banner items
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductShort'
+          description: successful operation
+  /api/basket:
+    get:
+      operationId: basket_retrieve
+      description: Get items from basket
+      summary: Get items from basket
+      tags:
+      - basket
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductShort'
+          description: successful operation
+    post:
+      operationId: basket_create
+      description: Add item to basket
+      summary: Add item to basket
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductShort'
+          description: successful operation
+    delete:
+      operationId: basket_destroy
+      description: Remove item from basket
+      summary: Remove item from basket
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductAddOrDeleteRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+          description: successful operation
+  /api/catalog:
+    get:
+      operationId: catalog_list
+      description: get catalog items
+      summary: Get catalog items
+      parameters:
+      - in: query
+        name: available
+        schema:
+          type: boolean
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - name: currentPage
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: freeDelivery
+        schema:
+          type: boolean
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: maxPrice
+        schema:
+          type: number
+      - in: query
+        name: minPrice
+        schema:
+          type: number
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: sort
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductShortList'
+          description: ''
+  /api/categories:
+    get:
+      operationId: categories_list
+      description: get catalog menu
+      summary: Get catalog menu
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/order/{id}:
+    get:
+      operationId: order_retrieve
+      description: Get order details
+      summary: Get order details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: order id
+        required: true
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: successful operation
+    post:
+      operationId: order_create
+      description: Confirm order
+      summary: Confirm order
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: order id
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInfoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderInfoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderInfoRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: successful operation
+  /api/orders:
+    get:
+      operationId: orders_list
+      description: Get orders
+      summary: Get orders
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: successful operation
+    post:
+      operationId: orders_create
+      description: Create order
+      summary: Create order
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemsFromBasketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ItemsFromBasketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ItemsFromBasketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          description: Order created successfully.
+  /api/payment/{id}:
+    post:
+      operationId: payment_create
+      description: Payment create api
+      summary: Payment create api
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentPayloadRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PaymentPayloadRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PaymentPayloadRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                PaymentId:
+                  value:
+                    paymentId: 1
+                  summary: paymentId
+          description: successful operation
+  /api/product/{id}:
+    get:
+      operationId: product_retrieve
+      description: get catalog item
+      summary: Get catalog item
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - product
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductFull'
+          description: ''
+  /api/product/{id}/reviews:
+    post:
+      operationId: product_reviews_create
+      description: post product review
+      summary: Post product review
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: product id
+        required: true
+      tags:
+      - product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                author: Annoying Orange
+                email: no-reply@mail.ru
+                text: rewrewrwerewrwerwerewrwerwer
+                rate: 4
+                date: 2023-05-05 12:12
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductReview'
+              examples:
+                Example:
+                  value:
+                  - author: Annoying Orange
+                    email: no-reply@mail.ru
+                    text: rewrewrwerewrwerwerewrwerwer
+                    rate: 4
+                    date: 2023-05-05 12:12
+          description: successful operation
+  /api/products/limited:
+    get:
+      operationId: products_limited_list
+      description: get catalog limited items
+      summary: Get catalog limited items
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductShort'
+          description: ''
+  /api/products/popular:
+    get:
+      operationId: products_popular_list
+      description: get catalog popular items
+      summary: Get catalog popular items
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductShort'
+          description: ''
+  /api/profile:
+    get:
+      operationId: profile_retrieve
+      description: Get user profile
+      summary: Get user profile
+      tags:
+      - profile
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: successful operation
+    post:
+      operationId: profile_create
+      description: update user info
+      summary: Update user info
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+          description: successful operation
+  /api/profile/avatar:
+    post:
+      operationId: profile_avatar_create
+      description: update user avatar
+      summary: Update user avatar
+      tags:
+      - profile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Загружаемый файл
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: successful operation
+  /api/profile/password:
+    post:
+      operationId: profile_password_create
+      description: update user password
+      summary: Update user password
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OldNewPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OldNewPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OldNewPasswordRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '202':
+          description: user password updated
+  /api/sales:
+    get:
+      operationId: sales_list
+      description: get sales items
+      summary: Get sales items
+      parameters:
+      - name: currentPage
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSaleItemsList'
+          description: ''
+  /api/sign-in:
+    post:
+      operationId: sign_in_create
+      description: sign in
+      summary: Sign in
+      parameters:
+      - in: query
+        name: password
+        schema:
+          type: string
+          minLength: 1
+        required: true
+      - in: query
+        name: username
+        schema:
+          type: string
+          minLength: 1
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInCredentialsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SignInCredentialsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SignInCredentialsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: successful operation
+        '500':
+          description: unsuccessful operation
+  /api/sign-out:
+    post:
+      operationId: sign_out_create
+      description: sign out
+      summary: Sign out
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: successful operation
+  /api/sign-up:
+    post:
+      operationId: sign_up_create
+      description: sign up
+      summary: Sign up
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+          minLength: 1
+        required: true
+      - in: query
+        name: password
+        schema:
+          type: string
+          minLength: 1
+        required: true
+      - in: query
+        name: username
+        schema:
+          type: string
+          minLength: 1
+        required: true
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpCredentialsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SignUpCredentialsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SignUpCredentialsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: successful operation
+        '500':
+          description: unsuccessful operation
+  /api/tags:
+    get:
+      operationId: tags_list
+      description: Get tags
+      summary: Get tags
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: integer
+      tags:
+      - tags
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+          description: ''
+components:
+  schemas:
+    Avatar:
+      type: object
+      description: Avatar serializer
+      properties:
+        src:
+          type: string
+          format: uri
+          nullable: true
+        alt:
+          type: string
+          nullable: true
+          maxLength: 50
+    Category:
+      type: object
+      description: Категория
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        image:
+          $ref: '#/components/schemas/CategoryImage'
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubCategory'
+      required:
+      - id
+      - image
+      - subcategories
+      - title
+    CategoryImage:
+      type: object
+      description: Изображение категории
+      properties:
+        src:
+          type: string
+          format: uri
+          nullable: true
+        alt:
+          type: string
+          readOnly: true
+      required:
+      - alt
+    DeliveryTypeEnum:
+      enum:
+      - ordinary
+      - express
+      - courier_delivery
+      - pickup
+      - pickup_point
+      - parcel_locker
+      - postal_delivery
+      - freight_delivery
+      type: string
+      description: |-
+        * `ordinary` - ordinary
+        * `express` - express
+        * `courier_delivery` - courier_delivery
+        * `pickup` - pickup
+        * `pickup_point` - pickup_point
+        * `parcel_locker` - parcel_locker
+        * `postal_delivery` - postal_delivery
+        * `freight_delivery` - freight_delivery
+    ItemsFromBasketRequest:
+      type: object
+      description: Items data from basket.
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: double
+          maximum: 100000000
+          minimum: -100000000
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+        count:
+          type: integer
+          minimum: 1
+      required:
+      - count
+      - id
+      - price
+    OldNewPasswordRequest:
+      type: object
+      description: Serializer for password change endpoint.
+      properties:
+        currentPassword:
+          type: string
+          minLength: 1
+        newPassword:
+          type: string
+          minLength: 1
+      required:
+      - currentPassword
+      - newPassword
+    Order:
+      type: object
+      description: Order serializer.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        fullName:
+          type: string
+          nullable: true
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 120
+        phone:
+          type: string
+          nullable: true
+          maxLength: 11
+        deliveryType:
+          type: string
+        paymentType:
+          type: string
+        totalCost:
+          type: number
+          format: double
+          maximum: 100000000
+          minimum: -100000000
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+        status:
+          type: string
+        city:
+          type: string
+          nullable: true
+          maxLength: 120
+        address:
+          type: string
+          nullable: true
+          maxLength: 120
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductShort'
+          readOnly: true
+      required:
+      - createdAt
+      - deliveryType
+      - id
+      - paymentType
+      - products
+      - status
+      - totalCost
+    OrderInfoRequest:
+      type: object
+      description: Order info serializer.
+      properties:
+        fullName:
+          type: string
+          nullable: true
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 120
+        phone:
+          type: string
+          nullable: true
+          maxLength: 11
+        deliveryType:
+          $ref: '#/components/schemas/DeliveryTypeEnum'
+        paymentType:
+          $ref: '#/components/schemas/PaymentTypeEnum'
+        city:
+          type: string
+          nullable: true
+          maxLength: 120
+        address:
+          type: string
+          nullable: true
+          maxLength: 120
+      required:
+      - deliveryType
+      - paymentType
+    PaginatedProductShortList:
+      type: object
+      required:
+      - count
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductShort'
+        currentPage:
+          type: integer
+          example: 1
+        lastPage:
+          type: integer
+          example: 5
+    PaginatedSaleItemsList:
+      type: object
+      required:
+      - count
+      - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SaleItems'
+        currentPage:
+          type: integer
+          example: 1
+        lastPage:
+          type: integer
+          example: 5
+    PaymentPayloadRequest:
+      type: object
+      description: Payment payload serializer.
+      properties:
+        number:
+          type: string
+          nullable: true
+          maxLength: 16
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        month:
+          type: string
+          nullable: true
+          maxLength: 2
+        year:
+          type: string
+          nullable: true
+          maxLength: 4
+        code:
+          type: string
+          nullable: true
+          maxLength: 3
+    PaymentTypeEnum:
+      enum:
+      - online
+      - someone
+      - через систему быстрых платежей
+      - криптовалюта
+      - электронный кошелек
+      - оплата наличными при получении
+      - безналичный расчет
+      - покупка в рассрочку
+      - мобильные платежи
+      type: string
+      description: |-
+        * `online` - online
+        * `someone` - someone
+        * `через систему быстрых платежей` - через систему быстрых платежей
+        * `криптовалюта` - криптовалюта
+        * `электронный кошелек` - электронный кошелек
+        * `оплата наличными при получении` - оплата наличными при получении
+        * `безналичный расчет` - безналичный расчет
+        * `покупка в рассрочку` - покупка в рассрочку
+        * `мобильные платежи` - мобильные платежи
+    ProductAddOrDeleteRequest:
+      type: object
+      description: Data for add or delete product serializer
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        count:
+          type: integer
+          minimum: 1
+      required:
+      - count
+      - id
+    ProductFull:
+      type: object
+      description: ProductFull
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          type: integer
+        price:
+          type: number
+          format: double
+          maximum: 100000000
+          minimum: -100000000
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+        count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        fullDescription:
+          type: string
+          nullable: true
+        freeDelivery:
+          type: boolean
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImage'
+          readOnly: true
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagName'
+          readOnly: true
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductReview'
+          readOnly: true
+        specifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductSpecification'
+          readOnly: true
+        rating:
+          type: number
+          format: double
+          readOnly: true
+      required:
+      - category
+      - date
+      - id
+      - images
+      - price
+      - rating
+      - reviews
+      - specifications
+      - tags
+      - title
+    ProductImage:
+      type: object
+      description: Product image
+      properties:
+        src:
+          type: string
+          format: uri
+        alt:
+          type: string
+          nullable: true
+          maxLength: 50
+      required:
+      - src
+    ProductReview:
+      type: object
+      description: Product review
+      properties:
+        author:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        text:
+          type: string
+        rate:
+          type: integer
+          maximum: 5
+          minimum: 1
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - date
+      - email
+      - rate
+    ProductShort:
+      type: object
+      description: ProductShort
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        category:
+          type: integer
+        price:
+          type: number
+          format: double
+          maximum: 100000000
+          minimum: -100000000
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+        count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        date:
+          type: string
+          format: date-time
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        freeDelivery:
+          type: boolean
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImage'
+          readOnly: true
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+          readOnly: true
+        reviews:
+          type: integer
+          readOnly: true
+        rating:
+          type: number
+          format: double
+          maximum: 1000
+          minimum: -1000
+          exclusiveMaximum: true
+          exclusiveMinimum: true
+      required:
+      - category
+      - date
+      - id
+      - images
+      - price
+      - rating
+      - reviews
+      - tags
+      - title
+    ProductSpecification:
+      type: object
+      description: Product specification
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        value:
+          type: string
+          nullable: true
+          maxLength: 100
+    Profile:
+      type: object
+      description: Profile serializer
+      properties:
+        fullName:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        phone:
+          type: string
+          nullable: true
+          maxLength: 11
+        avatar:
+          $ref: '#/components/schemas/Avatar'
+      required:
+      - avatar
+      - email
+      - fullName
+    ProfileUpdateRequest:
+      type: object
+      description: Serializer for update user profile
+      properties:
+        fullName:
+          type: string
+          nullable: true
+          maxLength: 120
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 120
+        phone:
+          type: string
+          nullable: true
+          maxLength: 11
+    SaleItems:
+      type: object
+      description: SaleItems
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        price:
+          type: number
+          format: double
+          readOnly: true
+        salePrice:
+          type: number
+          format: double
+          readOnly: true
+        dateFrom:
+          type: string
+          readOnly: true
+        dateTo:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImage'
+          readOnly: true
+      required:
+      - dateFrom
+      - dateTo
+      - id
+      - images
+      - price
+      - salePrice
+      - title
+    SignInCredentialsRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+      required:
+      - password
+      - username
+    SignUpCredentialsRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+      - password
+      - username
+    SubCategory:
+      type: object
+      description: Подкатегория
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        image:
+          $ref: '#/components/schemas/CategoryImage'
+      required:
+      - id
+      - image
+      - title
+    Tag:
+      type: object
+      description: Tag
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - id
+      - name
+    TagName:
+      type: object
+      description: Tag name
+      properties:
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+tags:
+- name: auth
+- name: catalog
+- name: product
+- name: tags
+- name: basket

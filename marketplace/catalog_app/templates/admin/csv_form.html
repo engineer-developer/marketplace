@@ -1,0 +1,16 @@
+{# Отображаем форму с выбором CSV файла и загрузкой данных #}
+
+
+{% extends 'admin/base.html' %}
+
+{% block content %}
+	<div>
+    <form action="." method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="submit-row">
+        <input type="submit" value="Upload CSV data">
+      </div>
+    </form>
+  </div>
+{% endblock %}

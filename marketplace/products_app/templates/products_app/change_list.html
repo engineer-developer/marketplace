@@ -1,0 +1,17 @@
+{# Добавляем дополнительную кнопку 'Добавить товар' #}
+
+
+{% extends 'admin/change_list.html' %}
+
+
+{% block object-tools-items %}
+  {% load admin_urls %}
+
+  <li>
+    <a href="{% url "admin:add_product" %}" class="addlink">
+      Добавить товар через форму
+    </a>
+  </li>
+
+  {{ block.super }}
+{% endblock %}
