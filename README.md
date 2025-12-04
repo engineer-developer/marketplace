@@ -7,7 +7,7 @@
 <img src="README/main_screen.png" alt="main_screen" style="display: block; margin: 0 auto;" width="500">
 
 ## Контракт для API
-Названия эндпоинтов и ожидаемую структуру ответа от API можно найти в [README/Marketplace API.yaml](./README/Marketplace API.yaml).
+Названия эндпоинтов и ожидаемую структуру ответа от API можно найти в [README/Marketplace API.yaml](./README/Marketplace_API.yaml)
 
 <img src="README/api_contract.png" alt="api_contract" style="display: block; margin: 0 auto;" width="500">
 
